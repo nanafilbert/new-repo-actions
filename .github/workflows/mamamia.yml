@@ -1,0 +1,54 @@
+
+name: Docker Workflow
+
+on:
+  - push
+
+jobs: 
+  docker: 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: Docker Build
+      env:  # remove this 👈
+        CONTAINER_REGISTRY: docker.io
+        DOCKER_USERNAME: getdzidon
+        DOCKER_PASSWORD: PrintTest!243!
+        IMAGE_NAME: e-com-app
+      run: echo docker build -t $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME:latest .
+    # run: echo docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest .
+
+    - name: Docker Login
+      env:  # remove this 👈
+        DOCKER_USERNAME: getdzidon
+        DOCKER_PASSWORD: PrintTest!243!
+      # DOCKER_HUB_TOKEN: NB8E7Bggft6GJBYbbgt655GGu77
+      run: docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
+    # run: docker login --username=$DOCKER_USERNAME --password-stdin <<< "$DOCKER_HUB_TOKEN"
+
+    - name: Docker Publish 
+      env:
+        DOCKER_USERNAME: getdzidon
+        DOCKER_PASSWORD: PrintTest!243!
+        IMAGE_NAME: e-com-app
+      run: docker push $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME:latest
+
+  deploy:
+  needs: docker
+  runs-on: ubuntu-latest 
+
+  steps:
+    - name: Docker login and Docker Run
+      env:  #remove this 👈
+        CONTAINER_REGISTRY: docker.io
+        DOCKER_USERNAME: getdzidon
+        DOCKER_PASSWORD: PrintTest!243!
+      # DOCKER_HUB_TOKEN: NB8E7Bggft6GJBYbbgt655GGu77
+        IMAGE_NAME: e-com-app
+      run: |
+        docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
+       #   docker login --username=$DOCKER_USERNAME --password-stdin <<< "$DOCKER_HUB_TOKEN"
+   
+  
