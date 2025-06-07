@@ -41,4 +41,4 @@ jobs:
       - name: Docker Run
         run: docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:latest
 
-#
+#....
