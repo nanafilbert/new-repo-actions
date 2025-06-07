@@ -3,8 +3,14 @@ name: Docker Workflow
 
 on:
   push:
-  branches:
-    - main
+   branches:
+      - main
+    
+   paths:          # contains files or directories you want to use for this workflow
+        - css/*
+        - images/*
+        - index.html
+        - dockerfile
 env:
   CONTAINER_REGISTRY: docker.io
   IMAGE_NAME: e-com-app
@@ -35,3 +41,4 @@ jobs:
       - name: Docker Run
         run: docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:latest
 
+#
