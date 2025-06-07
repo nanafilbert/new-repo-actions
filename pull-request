@@ -1,0 +1,44 @@
+
+name: Docker Workflow
+
+on:
+  push:
+   branches:
+      - main
+    
+   paths:          # contains files or directories you want to use for this workflow
+        - css/*
+        - images/*
+        - index.html
+        - dockerfile
+env:
+  CONTAINER_REGISTRY: docker.io
+  IMAGE_NAME: e-com-app
+
+jobs:
+  docker_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Docker Build
+        run: docker build -t $CONTAINER_REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:latest .
+
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Docker Publish
+        run: docker push $CONTAINER_REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+
+  docker_deploy:
+    needs: docker_build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Docker Run
+        run: docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+
+#........
