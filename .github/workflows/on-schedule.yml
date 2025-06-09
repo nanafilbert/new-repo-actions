@@ -4,7 +4,7 @@ name: Docker workflow
 on:
   schedule: 
     - cron: "* * * * *" 
-# workflow_dispatch: 👈
+  workflow_dispatch: 
 
 env:
   TARGET_DIR: home  # 🔧 removed extra space in variable name
