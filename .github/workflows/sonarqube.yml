@@ -23,7 +23,7 @@ jobs:
       - name: Run SonarQube Analysis
         run: |
          sonar-scanner \
-            -Dsonar.projectKey=new-repo-github-actions \
+            -Dsonar.projectKey=new-repo-actions \
             -Dsonar.organization=nanafilbert \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
