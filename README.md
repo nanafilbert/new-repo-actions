@@ -12,5 +12,3 @@
 
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=nanafilbert_new-repo-actions)](https://sonarcloud.io/summary/new_code?id=nanafilbert_new-repo-actions)
 
-
-[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-dark.svg)](https://sonarcloud.io/summary/new_code?id=nanafilbert_new-repo-actions)
