@@ -1,38 +1,48 @@
-name: SonarQube Scan
+name: SonarCloud Scan
 
 on:
   push:
     branches:
       - main
-  pull_request:
+      - 'feature/**'
 
 jobs:
-  sonar:
-    name: Run Tests & SonarQube Scan
+  sonarcloud:
+    name: SonarCloud Analysis
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Java (for SonarScanner)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests with coverage
-        run: npm test
+      - name: Run tests and generate coverage
+        run: npm test -- --coverage
 
-      - name: SonarQube Scan
+      - name: Verify coverage file exists
+        run: ls -lh coverage/lcov.info
+
+      - name: Run SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           npx sonar-scanner \
             -Dsonar.projectKey=nanafilbert_new-repo-actions \
             -Dsonar.organization=new-repo-github-actions \
+            -Dsonar.sources=. \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
