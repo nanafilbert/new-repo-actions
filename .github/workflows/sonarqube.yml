@@ -26,5 +26,5 @@ jobs:
             -Dsonar.projectKey=nanafilbert_new-repo-actions \
             -Dsonar.organization=new-repo-github-actions \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.branch.name=main
