@@ -39,19 +39,19 @@ jobs:
     - name: Build Docker image
       run: docker build -t my-nginx-app .
 
-    - name: Snyk Docker scan
-      uses: snyk/actions/docker@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-       image: my-nginx-app
-       args: --severity-threshold=medium
 
-    - name: Monitor Docker image in Snyk
-      run: snyk monitor --docker my-nginx-app
-      env:
-       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    - name: Install Snyk CLI
+      run: |
+          curl -sL https://snyk.io/install | bash
+          export PATH="$HOME/.snyk:$PATH"
 
+    - name: Authenticate Snyk
+      run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+    - name: Monitor image with Snyk
+      run: |
+          export PATH="$HOME/.snyk:$PATH"
+          snyk monitor --docker my-nginx-app
 
 
     - name: Install Sonar Scanner
