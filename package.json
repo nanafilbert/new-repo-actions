@@ -1,12 +1,7 @@
 {
-  "name": "vulnerable-node-app",
+  "name": "vuln-demo",
   "version": "1.0.0",
-  "description": "Node.js app with intentional vulnerabilities for Snyk and SonarCloud",
-  "main": "index.js",
-  "scripts": {
-    "test": "node index.js"
-  },
   "dependencies": {
-    "lodash": "4.17.11"
+    "lodash": "4.17.20"
   }
 }

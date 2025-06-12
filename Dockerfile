@@ -1,7 +1,3 @@
-FROM nginx:alpine
+FROM alpine:3.12
 
-RUN apk update && \
-    apk add --no-cache libxml2=2.13.4-r6
-
-COPY . /usr/share/nginx/html
-EXPOSE 80
+RUN apk update && apk add libxml2=2.9.10-r6
