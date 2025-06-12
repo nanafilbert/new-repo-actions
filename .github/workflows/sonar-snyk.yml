@@ -1,49 +1,39 @@
-name: Code Analysis
+name: Snyk Python Security Scan
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
-  code-analysis:
+  security:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # Setup Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '18'
+          python-version: '3.10'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      # --- Run your tests ---
-      - name: Run tests
-        run: npm test || true  # prevent failure from stopping the workflow
-
-      # --- Snyk security scan ---
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        with:
-          command: test        # ✅ Required
-          args: --all-projects # Optional: adjust based on your setup
+      - name: Snyk Test (Local Scan)
+        uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      # --- SonarCloud scan ---
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.0.0
         with:
-          args: >
-            -Dsonar.projectKey=nanafilbert_new-repo-actions
-            -Dsonar.organization=new-repo-github-actions
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.sources=.
-            -Dsonar.exclusions=**/node_modules/**
-            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          args: test
+
+      - name: Snyk Monitor (Send to Dashboard)
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
