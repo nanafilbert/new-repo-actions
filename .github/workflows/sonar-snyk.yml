@@ -30,10 +30,11 @@ jobs:
       # --- Snyk security scan ---
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
+        with:
+          command: test        # ✅ Required
+          args: --all-projects # Optional: adjust based on your setup
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: test
 
       # --- SonarCloud scan ---
       - name: SonarQube Scan
