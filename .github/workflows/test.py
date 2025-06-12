@@ -1,6 +1,3 @@
-test.py
-
-
 import requests
 import base64
 
