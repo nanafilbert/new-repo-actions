@@ -46,3 +46,4 @@ jobs:
             -Dsonar.organization=new-repo-github-actions \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+#
