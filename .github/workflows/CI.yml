@@ -36,6 +36,24 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
+    - name: Build Docker image
+      run: docker build -t my-nginx-app .
+
+    - name: Snyk Docker scan
+      uses: snyk/actions/docker@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+       image: my-nginx-app
+       args: --severity-threshold=medium
+
+    - name: Monitor Docker image in Snyk
+      run: snyk monitor --docker my-nginx-app
+      env:
+       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+
+
     - name: Install Sonar Scanner
       run: npm install -g sonarqube-scanner
 
