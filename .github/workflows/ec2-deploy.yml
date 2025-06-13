@@ -33,11 +33,11 @@ jobs:
             sudo apt-get -y update
             
             #Install Apache web server for launching the application
-            sudo apt-get install -y apache2
+            sudo apt-get install -y nginx
             sudo systemctl daemon-reload
-            sudo systemctl start apache2
-            sudo systemctl enable apache2
-            cd home
+            sudo systemctl startnginx
+            sudo systemctl enable nginx
+            cd nana
 
           
             sudo rm -rf /var/www/html/*
