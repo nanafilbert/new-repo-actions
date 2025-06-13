@@ -5,11 +5,9 @@ on:
     branches:
       - main
 
-    
 jobs:
   deploy:
     environment: prod
-
     name: Deploy to EC2
     runs-on: ubuntu-latest
 
@@ -35,15 +33,14 @@ jobs:
             sudo apt-get -y update
             
             #Install Apache web server for launching the application
-            sudo apt-get install -y nginx
+            sudo apt-get install -y apache2
             sudo systemctl daemon-reload
-            sudo systemctl startnginx
-            sudo systemctl enable nginx
-            cd nana
-
-          
+            sudo systemctl start apache2
+            sudo systemctl enable apache2
+            cd home
+            
+           # Remove existing contents of /var/www/html
             sudo rm -rf /var/www/html/*
            
             # Move new files to /var/www/html
             sudo mv * /var/www/html
-#
