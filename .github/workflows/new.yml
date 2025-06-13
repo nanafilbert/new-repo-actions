@@ -13,10 +13,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
-      - name: Generate package.json file
-        run: npm init -y
-
       - name: Install dependencies
         run: npm install
 
