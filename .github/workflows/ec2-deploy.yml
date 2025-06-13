@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+env:
+    TARGET: home
+    EC2_USER: ubuntu
 
 jobs:
   deploy:
@@ -20,14 +23,14 @@ jobs:
         with:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ vars.HOST_DNS }}
-          REMOTE_USER: ${{ secrets.EC2_USER }}
-          TARGET: ${{ vars.TARGET_DIR }}
+          REMOTE_USER: ${{ env.EC2_USER }}
+          TARGET: ${{ env.TARGET_DIR }}
 
       - name: Executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.HOST_DNS }}
-          username: ${{ secrets.EC2_USER }}
+          username: ${{ env.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo apt-get -y update
