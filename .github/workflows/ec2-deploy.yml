@@ -37,8 +37,11 @@ jobs:
             #Install Apache web server for launching the application
             sudo apt-get install -y nginx
             sudo systemctl daemon-reload
-            sudo systemctl startnginx
+            sudo systemctl start nginx
             sudo systemctl enable nginx
+            
+            # Create nana directory if it doesn't exist
+            mkdir -p nana
             cd nana
 
           
